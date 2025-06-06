@@ -13,6 +13,9 @@
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <style>
+      html {
+        scroll-behavior: smooth;
+      }
       .parlamentar-card {
         border-left-width: 4px;
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
@@ -197,6 +200,13 @@
       </div>
     </div>
 
+    <!-- Go to Top Button -->
+    <button id="to-top-button" title="Voltar ao topo" class="hidden fixed bottom-8 right-8 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-opacity duration-300">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7" />
+      </svg>
+    </button>
+
     <!-- Modal -->
     <div id="emendas-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full flex items-center justify-center hidden p-4 opacity-0 transition-opacity duration-300" style="z-index: 100;">
       <div class="modal-content relative mx-auto shadow-lg rounded-xl bg-white w-full max-w-2xl transform transition-transform duration-300 scale-95">
@@ -259,6 +269,7 @@
           const modalTitle = document.getElementById('modal-title');
           const modalBody = document.getElementById('modal-body');
           const layoutContainer = document.querySelector('.layout-container');
+          const toTopButton = document.getElementById('to-top-button');
 
           // --- CARD & LIST RENDERING ---
           const renderParlamentares = (parlamentaresToRender) => {
@@ -462,6 +473,18 @@
           searchInput.addEventListener('input', filterAndRender);
           roleFilter.addEventListener('change', filterAndRender);
           partyFilter.addEventListener('change', filterAndRender);
+          
+          toTopButton.addEventListener('click', () => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+
+          window.addEventListener('scroll', () => {
+              if (window.scrollY > 400) {
+                  toTopButton.classList.remove('hidden');
+              } else {
+                  toTopButton.classList.add('hidden');
+              }
+          });
 
           // --- INITIAL PAGE SETUP ---
           populatePartyFilter();
