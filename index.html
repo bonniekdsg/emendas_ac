@@ -1,0 +1,472 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Public+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Portal de Emendas Parlamentares - Acre</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      .parlamentar-card {
+        border-left-width: 4px;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+      .parlamentar-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .senador { border-left-color: #3b82f6; }
+      .deputado-federal { border-left-color: #10b981; }
+      .deputado-estadual { border-left-color: #f59e0b; }
+      .summary-table th, .summary-table td {
+        border: 1px solid #e5e7eb;
+        padding: 0.75rem;
+        text-align: center;
+      }
+      .summary-table th {
+        background-color: #f9fafb;
+      }
+      
+      .modal-header-senador { background: linear-gradient(to right, #3b82f6, #60a5fa); }
+      .modal-header-deputado-federal { background: linear-gradient(to right, #10b981, #34d399); }
+      .modal-header-deputado-estadual { background: linear-gradient(to right, #f59e0b, #fbbf24); }
+
+      #emendas-modal {
+        transition: opacity 0.3s ease-in-out;
+      }
+      .modal-content {
+        transition: transform 0.3s ease-in-out;
+      }
+      .layout-container {
+        transition: filter 0.3s ease-in-out;
+      }
+      .modal-open-backdrop-blur {
+        filter: blur(4px);
+      }
+      .nav-link {
+        transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        border-bottom: 2px solid transparent;
+        padding-bottom: 4px;
+      }
+      .nav-senadores:hover {
+        color: #3b82f6;
+        border-bottom-color: #3b82f6;
+      }
+      .nav-dep-federais:hover {
+        color: #10b981;
+        border-bottom-color: #10b981;
+      }
+      .nav-dep-estaduais:hover {
+        color: #f59e0b;
+        border-bottom-color: #f59e0b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="relative flex min-h-screen flex-col bg-gray-50 group/design-root" style='font-family: "Public Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] bg-white px-10 py-3">
+          <div class="flex items-center gap-8">
+            <div class="flex items-center gap-4 text-[#111418]">
+              <div class="size-4">
+                <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M240,208H224V120a8,8,0,0,0-8-8H160a8,8,0,0,0-8,8v88H136V48a8,8,0,0,0-8-8H72a8,8,0,0,0-8,8v160H48V168a8,8,0,0,0-8-8H16a8,8,0,0,0-8,8v48a8,8,0,0,0,8,8H240a8,8,0,0,0,8-8V208A8,8,0,0,0,240,208ZM24,216V168h8v48Zm48-160h48v160H72Zm88,112h48v48H160Z"/>
+                </svg>
+              </div>
+              <h2 class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em]">Portal de Emendas Parlamentares</h2>
+            </div>
+            <div class="flex items-center gap-9">
+              <a class="text-[#111418] text-sm font-medium leading-normal nav-link nav-senadores" href="#senadores">Senadores</a>
+              <a class="text-[#111418] text-sm font-medium leading-normal nav-link nav-dep-federais" href="#dep-federais">Deputados Federais</a>
+              <a class="text-[#111418] text-sm font-medium leading-normal nav-link nav-dep-estaduais" href="#dep-estaduais">Deputados Estaduais</a>
+            </div>
+          </div>
+          <div class="flex flex-1 justify-end gap-8 items-center">
+             <button
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f0f2f5] text-[#111418] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+            >
+              <div class="text-[#111418]" data-icon="Bell" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"
+                  ></path>
+                </svg>
+              </div>
+            </button>
+          </div>
+        </header>
+        <main class="px-10 sm:px-20 md:px-40 flex-1 py-10">
+            <!-- Dashboard Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-[960px] mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center">
+                    <h4 class="text-lg font-semibold text-gray-500 mb-2">Valor Total das Emendas</h4>
+                    <p id="total-valor-emendas" class="text-3xl font-bold text-blue-600">R$ 0,00</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center">
+                    <h4 class="text-lg font-semibold text-gray-500 mb-2">Total de Parlamentares</h4>
+                    <p id="total-parlamentares" class="text-3xl font-bold text-green-600">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center">
+                    <h4 class="text-lg font-semibold text-gray-500 mb-2">Número Total de Emendas</h4>
+                    <p id="total-emendas" class="text-3xl font-bold text-amber-600">0</p>
+                </div>
+            </div>
+
+          <!-- Summary Table -->
+          <div class="mb-10 max-w-[960px] mx-auto">
+            <h2 class="text-[#111418] text-xl font-bold leading-tight tracking-[-0.015em] mb-4 text-center">Resumo Quantitativo da Bancada</h2>
+            <div class="bg-white p-4 rounded-lg shadow-sm overflow-x-auto">
+                <table class="w-full border-collapse summary-table">
+                    <thead>
+                        <tr>
+                            <th class="font-semibold">Bancada</th>
+                            <th class="font-semibold">Senadores</th>
+                            <th class="font-semibold">Deputados Federais</th>
+                            <th class="font-semibold">Deputados Estaduais</th>
+                            <th class="font-semibold">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium">Quantidade</td>
+                            <td>3</td>
+                            <td>8</td>
+                            <td>24</td>
+                            <td>35</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Partidos</td>
+                            <td>3</td>
+                            <td>5</td>
+                            <td>11</td>
+                            <td>13</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Federações</td>
+                            <td>0</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1 mx-auto">
+            <div class="p-4 bg-white rounded-lg shadow-sm mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="search-input" class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                        <input id="search-input" placeholder="Buscar por nome..." class="form-input w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"/>
+                    </div>
+                    <div>
+                        <label for="role-filter" class="block text-sm font-medium text-gray-700 mb-1">Cargo</label>
+                        <select id="role-filter" class="form-select w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Todos os Cargos</option>
+                            <option value="senador">Senador</option>
+                            <option value="deputado-federal">Deputado Federal</option>
+                            <option value="deputado-estadual">Deputado Estadual</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="party-filter" class="block text-sm font-medium text-gray-700 mb-1">Partido</label>
+                        <select id="party-filter" class="form-select w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Todos os Partidos</option>
+                            <!-- Parties will be populated by JS -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="parlamentares-lista">
+              <!-- Cards dos parlamentares serão gerados dinamicamente aqui -->
+            </div>
+          </div>
+        </main>
+        <footer class="bg-white border-t py-6 mt-10">
+          <p class="text-center text-sm text-gray-500">
+            Ministério Público do Estado do Acre: © 2025 Observatório de Políticas Públicas. Todos os direitos reservados.
+          </p>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="emendas-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full flex items-center justify-center hidden p-4 opacity-0 transition-opacity duration-300" style="z-index: 100;">
+      <div class="modal-content relative mx-auto shadow-lg rounded-xl bg-white w-full max-w-2xl transform transition-transform duration-300 scale-95">
+        <!-- Modal header -->
+        <div id="modal-header" class="flex justify-between items-center p-5 rounded-t-xl">
+            <h3 class="text-xl font-bold text-white" id="modal-title">
+                Detalhes das Emendas
+            </h3>
+            <button type="button" class="text-white bg-transparent hover:bg-white/20 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" id="close-modal-btn-header">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+        <!-- Modal body -->
+        <div class="p-6 space-y-4">
+            <h4 class="text-lg font-bold text-gray-800">Detalhamento das Emendas</h4>
+            <div id="modal-body" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                <!-- Amendment details will be injected here -->
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+
+          // --- DATA LOADING ---
+          let allParlamentares = [];
+          let emendasData = {};
+
+          try {
+              const response = await fetch('dados.json');
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              const data = await response.json();
+              allParlamentares = data.parlamentares;
+
+              // Populate emendasData for the modal
+              allParlamentares.forEach(p => {
+                  emendasData[p.id] = {
+                      nome: p.nome,
+                      emendas: p.emendas || []
+                  };
+              });
+
+          } catch (error) {
+              console.error("Não foi possível carregar ou processar os dados dos parlamentares:", error);
+              document.getElementById('parlamentares-lista').innerHTML = '<p class="text-center text-red-500 font-bold p-10">Erro ao carregar os dados dos parlamentares. Por favor, verifique o arquivo dados.json e tente novamente.</p>';
+              return;
+          }
+
+          // --- DOM ELEMENTS ---
+          const parlamentaresLista = document.getElementById('parlamentares-lista');
+          const searchInput = document.getElementById('search-input');
+          const roleFilter = document.getElementById('role-filter');
+          const partyFilter = document.getElementById('party-filter');
+          const modal = document.getElementById('emendas-modal');
+          const modalContent = modal.querySelector('.modal-content');
+          const modalHeader = document.getElementById('modal-header');
+          const modalTitle = document.getElementById('modal-title');
+          const modalBody = document.getElementById('modal-body');
+          const layoutContainer = document.querySelector('.layout-container');
+
+          // --- CARD & LIST RENDERING ---
+          const renderParlamentares = (parlamentaresToRender) => {
+              parlamentaresLista.innerHTML = '';
+
+              const sections = {
+                  senador: {
+                      title: 'Senadores',
+                      id: 'senadores',
+                      container: document.createElement('div')
+                  },
+                  'deputado-federal': {
+                      title: 'Deputados Federais',
+                      id: 'dep-federais',
+                      container: document.createElement('div')
+                  },
+                  'deputado-estadual': {
+                      title: 'Deputados Estaduais',
+                      id: 'dep-estaduais',
+                      container: document.createElement('div')
+                  }
+              };
+
+              // Create card HTML for each parlamentar and group them by role
+              parlamentaresToRender.forEach(p => {
+                  const roleClassMap = {
+                      'senador': 'senador',
+                      'deputado-federal': 'deputado-federal',
+                      'deputado-estadual': 'deputado-estadual'
+                  };
+                  
+                  const cardHtml = `
+                    <div class="p-4 parlamentar-card-container cursor-pointer" data-parlamentar-id="${p.id}" data-role="${p.cargo}" data-partido="${p.partido}">
+                      <div class="flex items-stretch justify-between gap-4 rounded-lg bg-white p-4 shadow-sm parlamentar-card ${roleClassMap[p.cargo]}">
+                        <div class="flex flex-[2_2_0px] flex-col justify-center gap-2">
+                          <div>
+                            <p class="text-[#111418] text-lg font-bold leading-tight">${p.nome}</p>
+                            <p class="text-[#60758a] text-sm font-normal leading-normal">Partido: ${p.partido}</p>
+                          </div>
+                          <div>
+                            <p class="text-gray-600 text-sm">Total de Emendas: ${p.emendasCount}</p>
+                            <p class="text-gray-600 text-sm">Valor Total: <span class="text-blue-600 font-bold">${(p.valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
+                          </div>
+                        </div>
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex-1" style="background-image: url('${p.imagemUrl}');"></div>
+                      </div>
+                    </div>`;
+                  
+                  if (sections[p.cargo]) {
+                      sections[p.cargo].container.innerHTML += cardHtml;
+                  }
+              });
+
+              // Append sections with content to the main list
+              Object.values(sections).forEach(section => {
+                  if (section.container.children.length > 0) {
+                      const titleHtml = `<h2 id="${section.id}" class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">${section.title}</h2>`;
+                      section.container.insertAdjacentHTML('afterbegin', titleHtml);
+                      parlamentaresLista.appendChild(section.container);
+                  }
+              });
+          };
+
+          // --- DASHBOARD ---
+          const updateDashboard = (visibleParlamentares) => {
+              const visibleTotalValor = visibleParlamentares.reduce((sum, p) => sum + p.valorTotal, 0);
+              const visibleTotalEmendas = visibleParlamentares.reduce((sum, p) => sum + p.emendasCount, 0);
+
+              document.getElementById('total-valor-emendas').textContent = visibleTotalValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+              document.getElementById('total-parlamentares').textContent = visibleParlamentares.length;
+              document.getElementById('total-emendas').textContent = visibleTotalEmendas;
+          };
+
+          // --- FILTERS ---
+          const populatePartyFilter = () => {
+              const parties = new Set(allParlamentares.map(p => p.partido));
+              const sortedParties = Array.from(parties).sort();
+              partyFilter.innerHTML = '<option value="">Todos os Partidos</option>'; // Clear and add default
+              sortedParties.forEach(party => {
+                  const option = document.createElement('option');
+                  option.value = party;
+                  option.textContent = party;
+                  partyFilter.appendChild(option);
+              });
+          };
+
+          const filterAndRender = () => {
+              const searchTerm = searchInput.value.toLowerCase();
+              const selectedRole = roleFilter.value;
+              const selectedParty = partyFilter.value;
+
+              const filteredParlamentares = allParlamentares.filter(p => {
+                  const nameMatch = p.nome.toLowerCase().includes(searchTerm);
+                  const roleMatch = selectedRole === "" || p.cargo === selectedRole;
+                  const partyMatch = selectedParty === "" || p.partido === selectedParty;
+                  return nameMatch && roleMatch && partyMatch;
+              });
+
+              renderParlamentares(filteredParlamentares);
+              updateDashboard(filteredParlamentares);
+          };
+          
+          // --- MODAL ---
+          const closeModal = () => {
+              layoutContainer.classList.remove('modal-open-backdrop-blur');
+              modal.classList.add('opacity-0');
+              modalContent.classList.remove('scale-100');
+              modalContent.classList.add('scale-95');
+              setTimeout(() => {
+                  modal.classList.add('hidden');
+              }, 300);
+          };
+
+          const openModal = () => {
+              layoutContainer.classList.add('modal-open-backdrop-blur');
+              modal.classList.remove('hidden');
+              setTimeout(() => {
+                  modal.classList.remove('opacity-0');
+                  modalContent.classList.remove('scale-95');
+                  modalContent.classList.add('scale-100');
+              }, 10);
+          };
+
+          // --- EVENT LISTENERS ---
+          document.getElementById('close-modal-btn-header').addEventListener('click', closeModal);
+          modal.addEventListener('click', (event) => {
+              if (event.target === modal) closeModal();
+          });
+          
+          parlamentaresLista.addEventListener('click', (event) => {
+              const card = event.target.closest('.parlamentar-card-container');
+              if (!card) return;
+
+              const parlamentarId = card.dataset.parlamentarId;
+              const parlamentarRole = card.dataset.role;
+              const data = emendasData[parlamentarId];
+
+              if (data) {
+                  modalTitle.textContent = `Detalhes das Emendas - ${data.nome}`;
+                  
+                  modalHeader.className = 'flex justify-between items-center p-5 rounded-t-xl'; // Reset classes
+                  const roleToClassMap = {
+                      'senador': 'modal-header-senador',
+                      'deputado-federal': 'modal-header-deputado-federal',
+                      'deputado-estadual': 'modal-header-deputado-estadual'
+                  };
+                  if (roleToClassMap[parlamentarRole]) {
+                      modalHeader.classList.add(roleToClassMap[parlamentarRole]);
+                  }
+
+                  let emendasHtml = '';
+                  if (data.emendas && data.emendas.length > 0) {
+                      data.emendas.forEach(emenda => {
+                          const borderColor = parlamentarRole === 'senador' ? '#3b82f6' : parlamentarRole === 'deputado-federal' ? '#10b981' : '#f59e0b';
+                          const barColor = parlamentarRole === 'senador' ? 'bg-blue-600' : parlamentarRole === 'deputado-federal' ? 'bg-green-600' : 'bg-amber-500';
+
+                          const parseCurrency = (s) => parseFloat(String(s).replace(/[^0-9]/g, ''));
+                          const valorAprovado = parseCurrency(emenda.valorAprovado);
+                          const valorExecutado = parseCurrency(emenda.valorExecutado);
+                          const progresso = (valorAprovado > 0) ? ((valorExecutado / valorAprovado) * 100).toFixed(2) : 0;
+
+                          emendasHtml += `
+                              <div class="p-4 rounded-lg border-l-4" style="border-color: ${borderColor}; background-color: #f9fafb;">
+                                  <p class="text-sm text-gray-500">Ano: <span class="font-semibold text-gray-700">${emenda.ano}</span></p>
+                                  <p class="text-lg text-gray-800 my-1">${emenda.programa}</p>
+                                  <p class="font-bold text-gray-800">Município: <span class="font-normal">${emenda.municipio}</span></p>
+                                  <div class="grid grid-cols-3 gap-4 mt-4 text-center">
+                                      <div>
+                                          <p class="text-sm text-gray-500">Valor Aprovado</p>
+                                          <p class="text-lg font-bold text-green-700">${emenda.valorAprovado}</p>
+                                      </div>
+                                      <div>
+                                          <p class="text-sm text-gray-500">Valor Executado</p>
+                                          <p class="text-lg font-bold text-green-600">${emenda.valorExecutado}</p>
+                                      </div>
+                                      <div>
+                                          <p class="text-sm text-gray-500">Status</p>
+                                          <p class="text-lg font-bold text-amber-500">${emenda.status}</p>
+                                      </div>
+                                  </div>
+                                  <div class="mt-4">
+                                    <div class="flex justify-between mb-1">
+                                      <span class="text-base font-medium text-gray-700">Progresso da Execução</span>
+                                      <span class="text-sm font-medium text-gray-700">${progresso}%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                      <div class="${barColor} h-2.5 rounded-full" style="width: ${progresso}%"></div>
+                                    </div>
+                                  </div>
+                              </div>`;
+                      });
+                  } else {
+                      emendasHtml = '<p>Nenhuma emenda encontrada para este parlamentar.</p>';
+                  }
+
+                  modalBody.innerHTML = emendasHtml;
+                  openModal();
+              }
+          });
+          
+          searchInput.addEventListener('input', filterAndRender);
+          roleFilter.addEventListener('change', filterAndRender);
+          partyFilter.addEventListener('change', filterAndRender);
+
+          // --- INITIAL PAGE SETUP ---
+          populatePartyFilter();
+          filterAndRender(); // Initial render of all parlamentares and dashboard
+      });
+    </script>
+  </body>
+</html>
