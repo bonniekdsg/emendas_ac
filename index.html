@@ -24,9 +24,9 @@
         transform: translateY(-4px);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       }
-      .senador { border-left-color: #3b82f6; }
-      .deputado-federal { border-left-color: #10b981; }
-      .deputado-estadual { border-left-color: #f59e0b; }
+      .senador { border-left-color: #adadad; }
+      .deputado-federal { border-left-color: #903031; }
+      .deputado-estadual { border-left-color: #d34849; }
       .summary-table th, .summary-table td {
         border: 1px solid #e5e7eb;
         padding: 0.75rem;
@@ -36,9 +36,9 @@
         background-color: #f9fafb;
       }
       
-      .modal-header-senador { background: linear-gradient(to right, #3b82f6, #60a5fa); }
-      .modal-header-deputado-federal { background: linear-gradient(to right, #10b981, #34d399); }
-      .modal-header-deputado-estadual { background: linear-gradient(to right, #f59e0b, #fbbf24); }
+      .modal-header-senador { background-color: #adadad; }
+      .modal-header-deputado-federal { background-color: #903031; }
+      .modal-header-deputado-estadual { background-color: #d34849; }
 
       #emendas-modal {
         transition: opacity 0.3s ease-in-out;
@@ -57,44 +57,67 @@
         border-bottom: 2px solid transparent;
         padding-bottom: 4px;
       }
-      .nav-senadores:hover {
-        color: #3b82f6;
-        border-bottom-color: #3b82f6;
+      .nav-link:hover {
+        color: #f66566;
+        border-bottom-color: #f66566;
       }
-      .nav-dep-federais:hover {
-        color: #10b981;
-        border-bottom-color: #10b981;
+      .dashboard-card {
+        background-color: #ffffff;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
       }
-      .nav-dep-estaduais:hover {
-        color: #f59e0b;
-        border-bottom-color: #f59e0b;
+      .dashboard-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Text Animate Effect */
+      @keyframes blurInUp {
+        from {
+          opacity: 0;
+          filter: blur(10px);
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          filter: blur(0px);
+          transform: translateY(0px);
+        }
+      }
+      .animate-word {
+        display: inline-block;
+        white-space: pre; /* Preserve spaces */
+        opacity: 0; /* Start hidden */
+        animation: blurInUp 0.5s ease-out forwards;
+      }
+
+      .summary-text {
+        color: #60758a;
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 4rem auto;
       }
     </style>
   </head>
   <body>
     <div class="relative flex min-h-screen flex-col bg-gray-50 group/design-root" style='font-family: "Public Sans", "Noto Sans", sans-serif;'>
       <div class="layout-container flex h-full grow flex-col">
-        <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] bg-white px-10 py-3">
-          <div class="flex items-center gap-8">
-            <div class="flex items-center gap-4 text-[#111418]">
-              <div class="size-4">
-                <svg viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M240,208H224V120a8,8,0,0,0-8-8H160a8,8,0,0,0-8,8v88H136V48a8,8,0,0,0-8-8H72a8,8,0,0,0-8,8v160H48V168a8,8,0,0,0-8-8H16a8,8,0,0,0-8,8v48a8,8,0,0,0,8,8H240a8,8,0,0,0,8-8V208A8,8,0,0,0,240,208ZM24,216V168h8v48Zm48-160h48v160H72Zm88,112h48v48H160Z"/>
-                </svg>
-              </div>
-              <h2 class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em]">Portal de Emendas Parlamentares</h2>
-            </div>
-            <div class="flex items-center gap-9">
-              <a class="text-[#111418] text-sm font-medium leading-normal nav-link nav-senadores" href="#senadores">Senadores</a>
-              <a class="text-[#111418] text-sm font-medium leading-normal nav-link nav-dep-federais" href="#dep-federais">Deputados Federais</a>
-              <a class="text-[#111418] text-sm font-medium leading-normal nav-link nav-dep-estaduais" href="#dep-estaduais">Deputados Estaduais</a>
+        <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap px-10 py-3" style="background-color: #903031;">
+          <div class="flex-1">
+            <div class="flex items-center gap-4 text-white">
             </div>
           </div>
-          <div class="flex flex-1 justify-end gap-8 items-center">
+          <div class="flex items-center justify-center gap-9">
+            <a class="text-white text-sm font-medium leading-normal nav-link nav-senadores" href="#senadores">Senadores</a>
+            <a class="text-white text-sm font-medium leading-normal nav-link nav-dep-federais" href="#dep-federais">Deputados Federais</a>
+            <a class="text-white text-sm font-medium leading-normal nav-link nav-dep-estaduais" href="#dep-estaduais">Deputados Estaduais</a>
+          </div>
+          <div class="flex flex-1 justify-end items-center">
              <button
-              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f0f2f5] text-[#111418] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-transparent hover:bg-white/20 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
             >
-              <div class="text-[#111418]" data-icon="Bell" data-size="20px" data-weight="regular">
+              <div class="text-white" data-icon="Bell" data-size="20px" data-weight="regular">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
                   <path
                     d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"
@@ -105,19 +128,29 @@
           </div>
         </header>
         <main class="px-10 sm:px-20 md:px-40 flex-1 py-10">
+            <!-- Title Section -->
+            <div class="text-center pt-8 pb-4">
+              <h1 id="flip-text-container" class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-[#111418]">
+                <!-- Flip text will be injected here -->
+              </h1>
+              <p id="summary-text-container" class="summary-text">
+                Acompanhe de forma transparente a destinação e execução<br>das emendas parlamentares da bancada do Acre.
+              </p>
+            </div>
+
             <!-- Dashboard Section -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-[960px] mx-auto">
-                <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center">
-                    <h4 class="text-lg font-semibold text-gray-500 mb-2">Valor Total das Emendas</h4>
-                    <p id="total-valor-emendas" class="text-3xl font-bold text-blue-600">R$ 0,00</p>
+                <div class="p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center dashboard-card">
+                    <h4 class="text-lg font-normal mb-2 text-gray-600">Valor Total das Emendas</h4>
+                    <p id="total-valor-emendas" class="text-[27px] font-extrabold text-[#903031]">R$ 0,00</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center">
-                    <h4 class="text-lg font-semibold text-gray-500 mb-2">Total de Parlamentares</h4>
-                    <p id="total-parlamentares" class="text-3xl font-bold text-green-600">0</p>
+                <div class="p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center dashboard-card">
+                    <h4 class="text-lg font-normal mb-2 text-gray-600">Total de Parlamentares</h4>
+                    <p id="total-parlamentares" class="text-[27px] font-extrabold text-[#903031]">0</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center">
-                    <h4 class="text-lg font-semibold text-gray-500 mb-2">Número Total de Emendas</h4>
-                    <p id="total-emendas" class="text-3xl font-bold text-amber-600">0</p>
+                <div class="p-6 rounded-lg shadow-sm flex flex-col items-center justify-center text-center dashboard-card">
+                    <h4 class="text-lg font-normal mb-2 text-gray-600">Número Total de Emendas</h4>
+                    <p id="total-emendas" class="text-[27px] font-extrabold text-[#903031]">0</p>
                 </div>
             </div>
 
@@ -194,14 +227,14 @@
         </main>
         <footer class="bg-white border-t py-6 mt-10">
           <p class="text-center text-sm text-gray-500">
-            Ministério Público do Estado do Acre: © 2025 Observatório de Políticas Públicas. Todos os direitos reservados.
+            <span style="color: #903031; font-weight: 600;">Ministério Público do Estado do Acre:</span> © 2025 Observatório de Políticas Públicas. Todos os direitos reservados.
           </p>
         </footer>
       </div>
     </div>
 
     <!-- Go to Top Button -->
-    <button id="to-top-button" title="Voltar ao topo" class="hidden fixed bottom-8 right-8 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-opacity duration-300">
+    <button id="to-top-button" title="Voltar ao topo" class="hidden fixed bottom-8 right-8 z-50 p-3 bg-[#903031] text-white rounded-full shadow-lg hover:bg-[#7a2829] focus:outline-none focus:ring-2 focus:ring-[#903031] focus:ring-opacity-50 transition-opacity duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7" />
       </svg>
@@ -231,6 +264,46 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
+
+          // --- Title Animate Effect ---
+          const titleContainer = document.getElementById('flip-text-container');
+          const titleText = "Portal de Emendas Parlamentares";
+          const titleWords = titleText.split(' ');
+          titleContainer.innerHTML = ''; // Clear original text
+
+          titleWords.forEach((word, index) => {
+            const span = document.createElement('span');
+            span.textContent = word + ' ';
+            span.className = 'animate-word';
+            span.style.animationDelay = `${index * 0.1}s`;
+            titleContainer.appendChild(span);
+          });
+
+          // --- Summary Text Animate Effect ---
+          const summaryTextContainer = document.getElementById('summary-text-container');
+          const originalHTML = summaryTextContainer.innerHTML.trim();
+          summaryTextContainer.innerHTML = ''; // Clear original text
+
+          const lines = originalHTML.split('<br>');
+          let wordIndex = 0;
+
+          lines.forEach((line, lineIndex) => {
+              const words = line.trim().split(' ');
+              words.forEach((word) => {
+                  if (word) {
+                      const span = document.createElement('span');
+                      span.textContent = word + ' ';
+                      span.className = 'animate-word';
+                      span.style.animationDelay = `${wordIndex * 0.08}s`;
+                      summaryTextContainer.appendChild(span);
+                      wordIndex++;
+                  }
+              });
+
+              if (lineIndex < lines.length - 1) {
+                  summaryTextContainer.appendChild(document.createElement('br'));
+              }
+          });
 
           // --- DATA LOADING ---
           let allParlamentares = [];
@@ -311,7 +384,7 @@
                           </div>
                           <div>
                             <p class="text-gray-600 text-sm">Total de Emendas: ${p.emendasCount}</p>
-                            <p class="text-gray-600 text-sm">Valor Total: <span class="text-blue-600 font-bold">${(p.valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
+                            <p class="text-gray-600 text-sm">Valor Total: <span class="text-[#903031] font-bold">${(p.valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
                           </div>
                         </div>
                         <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex-1" style="background-image: url('${p.imagemUrl}');"></div>
@@ -423,8 +496,8 @@
                   let emendasHtml = '';
                   if (data.emendas && data.emendas.length > 0) {
                       data.emendas.forEach(emenda => {
-                          const borderColor = parlamentarRole === 'senador' ? '#3b82f6' : parlamentarRole === 'deputado-federal' ? '#10b981' : '#f59e0b';
-                          const barColor = parlamentarRole === 'senador' ? 'bg-blue-600' : parlamentarRole === 'deputado-federal' ? 'bg-green-600' : 'bg-amber-500';
+                          const borderColor = parlamentarRole === 'senador' ? '#adadad' : parlamentarRole === 'deputado-federal' ? '#903031' : '#d34849';
+                          const barColor = parlamentarRole === 'senador' ? 'bg-[#adadad]' : parlamentarRole === 'deputado-federal' ? 'bg-[#903031]' : 'bg-[#d34849]';
 
                           const parseCurrency = (s) => parseFloat(String(s).replace(/[^0-9]/g, ''));
                           const valorAprovado = parseCurrency(emenda.valorAprovado);
