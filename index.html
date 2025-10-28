@@ -556,6 +556,18 @@
 
     const cards = Array.from(document.querySelectorAll('.content-collapsible .cursor-pointer'));
 
+    // Snapshot do estado inicial para restauração
+    const initial = {
+      metrics: {
+        emendas: metrics.emendas?.textContent || '',
+        valor: metrics.valor?.textContent || '',
+        media: metrics.media?.textContent || '',
+        execPct: metrics.execPct?.textContent || '',
+        execBarWidth: metrics.execBar?.style.width || ''
+      },
+      cards: cards.map(card => ({ el: card, display: card.style.display || '' }))
+    };
+
     // Cria mensagem de estado vazio (acessível)
     const filtersContainer = document.getElementById('filters-container');
     let emptyMsg = document.getElementById('filters-empty');
@@ -623,6 +635,27 @@
       const partyQ = normalize(partyInput?.value || '');
       const cityQ = normalize(cityInput?.value || '');
 
+      // Se todos filtros estiverem vazios, restaurar estado original imediatamente
+      const allEmpty = !nameQ && !partyQ && !cityQ;
+      if (allEmpty) {
+        initial.cards.forEach(({ el, display }) => {
+          el.dataset.hiding = '';
+          el.style.display = display;
+          el.style.opacity = '1';
+        });
+        emptyMsg.classList.add('hidden');
+        animateText(metrics.emendas, initial.metrics.emendas);
+        animateText(metrics.valor, initial.metrics.valor);
+        animateText(metrics.media, initial.metrics.media);
+        if (metrics.execPct) metrics.execPct.textContent = initial.metrics.execPct;
+        if (metrics.execBar) {
+          metrics.execBar.style.transition = 'width 200ms';
+          metrics.execBar.style.width = initial.metrics.execBarWidth || metrics.execBar.style.width;
+        }
+        saveToStorage();
+        return;
+      }
+
       let visibleCount = 0;
       let sumEmendas = 0;
       let sumValor = 0;
@@ -644,7 +677,8 @@
         const matches = (!nameQ || nomeNorm.includes(nameQ)) && (!partyQ || partidoNorm.includes(partyQ)) && hasCity;
 
         if (matches) {
-          // mostrar com leve transição
+          // mostrar com leve transição e cancelar ocultação tardia
+          card.dataset.hiding = '';
           card.style.display = '';
           card.style.opacity = '1';
           visibleCount++;
@@ -658,9 +692,10 @@
           sumEmendas += emendasVal;
           sumValor += parseValor(valorText);
         } else {
+          card.dataset.hiding = '1';
           card.style.transition = 'opacity 200ms';
           card.style.opacity = '0';
-          setTimeout(() => { card.style.display = 'none'; }, 200);
+          setTimeout(() => { if (card.dataset.hiding === '1') card.style.display = 'none'; }, 200);
         }
       });
 
@@ -682,6 +717,8 @@
       [nameInput, partyInput, cityInput].forEach(input => {
         if (!input) return;
         input.addEventListener('input', () => { saveToStorage(); applyFilters(); }, { passive: true });
+        input.addEventListener('change', () => { saveToStorage(); applyFilters(); }, { passive: true });
+        input.addEventListener('keyup', (e) => { if (e.key === 'Escape') { input.value = ''; saveToStorage(); applyFilters(); } }, { passive: true });
       });
       if (clearBtn) {
         clearBtn.addEventListener('click', () => {
