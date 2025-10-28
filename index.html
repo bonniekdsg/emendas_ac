@@ -121,7 +121,7 @@
 </div>
 <p class="text-base font-medium text-gray-500 dark:text-gray-400">Total de Emendas</p>
 </div>
-<p class="text-4xl font-bold mt-4 text-[#111418] dark:text-white">2.345</p>
+<p id="metric-total-emendas" class="text-4xl font-bold mt-4 text-[#111418] dark:text-white">2.345</p>
 </div>
 </div>
 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 flex flex-col justify-between">
@@ -132,7 +132,7 @@
 </div>
 <p class="text-base font-medium text-gray-500 dark:text-gray-400">Valor Total</p>
 </div>
-<p class="text-4xl font-bold mt-4 text-[#111418] dark:text-white">R$ 48,7 mi</p>
+<p id="metric-valor-total" class="text-4xl font-bold mt-4 text-[#111418] dark:text-white">R$ 48,7 mi</p>
 </div>
 </div>
 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 flex flex-col justify-between">
@@ -143,7 +143,7 @@
 </div>
 <p class="text-base font-medium text-gray-500 dark:text-gray-400">Média por Parlamentar</p>
 </div>
-<p class="text-4xl font-bold mt-4 text-[#111418] dark:text-white">R$ 1,4 mi</p>
+<p id="metric-media-parlamentar" class="text-4xl font-bold mt-4 text-[#111418] dark:text-white">R$ 1,4 mi</p>
 </div>
 </div>
 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 flex flex-col justify-between">
@@ -157,18 +157,18 @@
 <p class="text-base font-medium text-gray-500 dark:text-gray-400">Taxa de Execução</p>
 </div>
 </div>
-<p class="text-2xl font-bold text-green-600 dark:text-green-300">78%</p>
+<p id="metric-execucao-percent" class="text-2xl font-bold text-green-600 dark:text-green-300">78%</p>
 </div>
 <div class="mt-4">
 <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-<div class="bg-green-500 h-2.5 rounded-full" style="width: 78%"></div>
+<div id="metric-execucao-bar" class="bg-green-500 h-2.5 rounded-full" style="width: 78%"></div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<div class="flex flex-col gap-4 p-4 sticky top-16 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm z-10 border-b border-gray-200 dark:border-gray-700">
+<div id="filters-container" class="flex flex-col gap-4 p-4 sticky top-16 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm z-10 border-b border-gray-200 dark:border-gray-700" role="region" aria-label="Filtros">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
 <div class="flex-grow lg:col-span-1">
 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nome do Parlamentar</label>
@@ -176,7 +176,7 @@
 <div class="text-[#617589] dark:text-gray-400 absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 <span class="material-symbols-outlined text-xl">person</span>
 </div>
-<input class="form-input block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 h-11 placeholder:text-[#617589] dark:placeholder:text-gray-500 pl-10 focus:ring-primary focus:border-primary text-base" placeholder="Digite um nome..." type="text" value=""/>
+<input id="filter-name" class="form-input block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 h-11 placeholder:text-[#617589] dark:placeholder:text-gray-500 pl-10 focus:ring-primary focus:border-primary text-base" placeholder="Digite um nome..." type="text" value=""/>
 </div>
 </div>
 <div class="flex-grow lg:col-span-1">
@@ -185,7 +185,7 @@
 <div class="text-[#617589] dark:text-gray-400 absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 <span class="material-symbols-outlined text-xl">group</span>
 </div>
-<input class="form-input block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 h-11 placeholder:text-[#617589] dark:placeholder:text-gray-500 pl-10 focus:ring-primary focus:border-primary text-base" placeholder="Digite um partido..." type="text" value=""/>
+<input id="filter-party" class="form-input block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 h-11 placeholder:text-[#617589] dark:placeholder:text-gray-500 pl-10 focus:ring-primary focus:border-primary text-base" placeholder="Digite um partido..." type="text" value=""/>
 </div>
 </div>
 <div class="flex-grow lg:col-span-1">
@@ -194,11 +194,11 @@
 <div class="text-[#617589] dark:text-gray-400 absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 <span class="material-symbols-outlined text-xl">location_city</span>
 </div>
-<input class="form-input block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 h-11 placeholder:text-[#617589] dark:placeholder:text-gray-500 pl-10 focus:ring-primary focus:border-primary text-base" placeholder="Digite um município..." type="text" value=""/>
+<input id="filter-city" class="form-input block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 h-11 placeholder:text-[#617589] dark:placeholder:text-gray-500 pl-10 focus:ring-primary focus:border-primary text-base" placeholder="Digite um município..." type="text" value=""/>
 </div>
 </div>
 <div class="lg:col-span-1">
-<button class="w-full flex items-center justify-center gap-2 h-11 px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+<button id="filters-clear" class="w-full flex items-center justify-center gap-2 h-11 px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
 <span class="material-symbols-outlined text-xl">clear_all</span>
                                         Limpar Filtros
                                     </button>
@@ -527,6 +527,176 @@
     } else {
       avatars.forEach(applyBg);
     }
+  });
+</script>
+<script>
+  // Filtros em tempo real: conexão com dashboard e cards
+  document.addEventListener('DOMContentLoaded', () => {
+    const nameInput = document.getElementById('filter-name');
+    const partyInput = document.getElementById('filter-party');
+    const cityInput = document.getElementById('filter-city');
+    const clearBtn = document.getElementById('filters-clear');
+    const metrics = {
+      emendas: document.getElementById('metric-total-emendas'),
+      valor: document.getElementById('metric-valor-total'),
+      media: document.getElementById('metric-media-parlamentar'),
+      execPct: document.getElementById('metric-execucao-percent'),
+      execBar: document.getElementById('metric-execucao-bar'),
+    };
+
+    const dataScript = document.getElementById('parlamentares-emendas-json');
+    const dataset = (() => { try { return JSON.parse(dataScript?.textContent || '{}'); } catch { return { parlamentares: [] }; } })();
+    const findByName = (nome) => (dataset.parlamentares || []).find(p => (p.nome || '').trim().toLowerCase() === (nome || '').trim().toLowerCase());
+
+    const normalize = (str) => (str || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}+/gu, '')
+      .trim();
+
+    const cards = Array.from(document.querySelectorAll('.content-collapsible .cursor-pointer'));
+
+    // Cria mensagem de estado vazio (acessível)
+    const filtersContainer = document.getElementById('filters-container');
+    let emptyMsg = document.getElementById('filters-empty');
+    if (!emptyMsg) {
+      emptyMsg = document.createElement('div');
+      emptyMsg.id = 'filters-empty';
+      emptyMsg.className = 'hidden p-4 my-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800';
+      emptyMsg.setAttribute('role', 'status');
+      emptyMsg.setAttribute('aria-live', 'polite');
+      emptyMsg.innerHTML = '<div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#617589] dark:text-gray-400">info</span><p class="text-sm text-[#617589] dark:text-gray-400">Nenhum resultado encontrado para os filtros aplicados.</p></div>';
+      filtersContainer.insertAdjacentElement('afterend', emptyMsg);
+    }
+
+    const parseValor = (text) => {
+      const t = (text || '').replace(/\s+/g, ' ').trim();
+      const matchMi = t.match(/R\$\s*([0-9]+(?:[\.,][0-9]+)?)\s*mi/i);
+      const matchMil = t.match(/R\$\s*([0-9]+(?:[\.,][0-9]+)?)\s*mil/i);
+      const matchPlain = t.match(/R\$\s*([0-9\.\,]+)/i);
+      let val = 0;
+      if (matchMi) {
+        val = parseFloat(matchMi[1].replace('.', '').replace(',', '.')) * 1_000_000;
+      } else if (matchMil) {
+        val = parseFloat(matchMil[1].replace('.', '').replace(',', '.')) * 1_000;
+      } else if (matchPlain) {
+        val = parseFloat(matchPlain[1].replace('.', '').replace(',', '.'));
+      }
+      return isNaN(val) ? 0 : val;
+    };
+
+    const formatValorShort = (val) => {
+      if (val >= 1_000_000) {
+        const mi = val / 1_000_000;
+        return `R$ ${mi.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} mi`;
+      } else if (val >= 1_000) {
+        const mil = val / 1_000;
+        return `R$ ${mil.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} mil`;
+      }
+      return `R$ ${val.toLocaleString('pt-BR')}`;
+    };
+
+    const animateText = (el, newText) => {
+      if (!el) return;
+      el.style.transition = 'opacity 200ms';
+      el.style.opacity = '0';
+      setTimeout(() => { el.textContent = newText; el.style.opacity = '1'; }, 200);
+    };
+
+    const restoreFromStorage = () => {
+      const n = localStorage.getItem('filter-name') || '';
+      const p = localStorage.getItem('filter-party') || '';
+      const c = localStorage.getItem('filter-city') || '';
+      if (nameInput) nameInput.value = n;
+      if (partyInput) partyInput.value = p;
+      if (cityInput) cityInput.value = c;
+    };
+
+    const saveToStorage = () => {
+      if (nameInput) localStorage.setItem('filter-name', nameInput.value || '');
+      if (partyInput) localStorage.setItem('filter-party', partyInput.value || '');
+      if (cityInput) localStorage.setItem('filter-city', cityInput.value || '');
+    };
+
+    const applyFilters = () => {
+      const nameQ = normalize(nameInput?.value || '');
+      const partyQ = normalize(partyInput?.value || '');
+      const cityQ = normalize(cityInput?.value || '');
+
+      let visibleCount = 0;
+      let sumEmendas = 0;
+      let sumValor = 0;
+
+      cards.forEach(card => {
+        const nameEl = card.querySelector('.text-center p:nth-of-type(2)');
+        const partyEl = card.querySelector('.text-center p:nth-of-type(3)');
+        const nome = (nameEl?.textContent || '').trim();
+        const partidoRaw = (partyEl?.textContent || '').trim();
+        const partidoMatch = partidoRaw.match(/\(([^)]+)\)/);
+        const partido = partidoMatch ? partidoMatch[1] : partidoRaw;
+
+        const nomeNorm = normalize(nome);
+        const partidoNorm = normalize(partido);
+
+        const data = findByName(nome);
+        const hasCity = cityQ === '' || !!(data && (data.emendas || []).some(e => normalize(e.beneficiario || '') .includes(cityQ)));
+
+        const matches = (!nameQ || nomeNorm.includes(nameQ)) && (!partyQ || partidoNorm.includes(partyQ)) && hasCity;
+
+        if (matches) {
+          // mostrar com leve transição
+          card.style.display = '';
+          card.style.opacity = '1';
+          visibleCount++;
+
+          // acumular métricas
+          const infoBlock = card.querySelector('.mt-4');
+          const emendasEl = infoBlock?.querySelector('p:first-of-type span');
+          const valorEl = infoBlock?.querySelector('p:last-of-type');
+          const emendasVal = parseInt((emendasEl?.textContent || '0').replace(/\D/g, ''), 10) || 0;
+          const valorText = (valorEl?.textContent || '').replace('Valor Total:', '').trim();
+          sumEmendas += emendasVal;
+          sumValor += parseValor(valorText);
+        } else {
+          card.style.transition = 'opacity 200ms';
+          card.style.opacity = '0';
+          setTimeout(() => { card.style.display = 'none'; }, 200);
+        }
+      });
+
+      // Atualiza métricas com animações simples
+      animateText(metrics.emendas, sumEmendas.toLocaleString('pt-BR'));
+      animateText(metrics.valor, formatValorShort(sumValor));
+      const mediaVal = visibleCount > 0 ? (sumValor / visibleCount) : 0;
+      animateText(metrics.media, formatValorShort(mediaVal));
+
+      // Estado vazio
+      if (visibleCount === 0) {
+        emptyMsg.classList.remove('hidden');
+      } else {
+        emptyMsg.classList.add('hidden');
+      }
+    };
+
+    const bind = () => {
+      [nameInput, partyInput, cityInput].forEach(input => {
+        if (!input) return;
+        input.addEventListener('input', () => { saveToStorage(); applyFilters(); }, { passive: true });
+      });
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (nameInput) nameInput.value = '';
+          if (partyInput) partyInput.value = '';
+          if (cityInput) cityInput.value = '';
+          saveToStorage();
+          applyFilters();
+        }, { passive: true });
+      }
+    };
+
+    restoreFromStorage();
+    bind();
+    applyFilters();
   });
 </script>
 <script>
